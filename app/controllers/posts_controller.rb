@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   def show
+    @users = User.all
     @post = Post.find(params[:id])
   end
 
@@ -9,11 +10,12 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
+    @categories = Category.all
   end
 
   def create
-    post = Post.create(post_params)
-    redirect_to post
+    @post = Post.create(post_params)
+    redirect_to @post
   end
 
   private
