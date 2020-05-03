@@ -1,1 +1,36 @@
+<h1> <%= @post.title %>
+</h1>
+<p>
+    <%= @post.content %>
+</p>
 
+<h3> Categories </h3>
+<ul>
+<% @post.categories.each do |category| %>
+    <li> <%= category.name %> </li>
+<% end %>
+</ul>
+
+<h3> Comments </h3>
+<ul>
+<% @post.comments.each do |comment| %>
+    <li> <%= comment.user.username%> says: <%= comment.content %> </li>
+<% end %>
+</ul>
+
+<h3> Unique </h3>
+<ul>
+<% @post.users.uniq.each do |user| %>
+    <li> <%= link_to user.username, user %> </li>
+<% end %>
+</ul>
+
+<%= form_for @post.comments.build do |f| %>
+    <%= f.hidden_field :post_id %> <!-- #refering to self -->
+    Select User<%= f.collection_select :user_id, @users, :id, :username %><br><br>
+    <%= f.fields_for :user, User.new do |user_fields| %>
+        Username: <%= user_fields.text_field :username %>
+    <% end %> <br><br>
+    Content: <%= f.text_area :content %><br><br>
+    <%= f.submit %>
+<% end %>
